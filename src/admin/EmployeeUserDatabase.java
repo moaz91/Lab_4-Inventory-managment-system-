@@ -31,8 +31,8 @@ public class EmployeeUserDatabase {
     }
 
     public EmployeeUser createRecordFrom(String line) {
-        String[] word = line.split(",");
-        EmployeeUser employee = new EmployeeUser(word[0], word[1], word[2], word[3], word[4]);
+        String[] feild = line.split(",");
+        EmployeeUser employee = new EmployeeUser(feild[0], feild[1], feild[2], feild[3], feild[4]);
         return employee;
     }
 
