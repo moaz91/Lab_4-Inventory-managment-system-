@@ -26,7 +26,7 @@ public class CustomerProductDatabase {
     }
 
     public void readFromFile() {
-        String line;// to read a line as a string from the file.
+        String line; // to read a line as a string from the file.
         try {
             File file = new File(fileName);
             Scanner scan = new Scanner(file);
@@ -40,6 +40,7 @@ public class CustomerProductDatabase {
                 }
 
             }
+            scan.close();
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
         }

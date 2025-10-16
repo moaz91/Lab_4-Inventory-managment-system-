@@ -17,8 +17,8 @@ import java.util.Scanner;
  * @author Nour
  */
 public class EmployeeRole {
-    private ProductDatabase productsDatabase;
-    private CustomerProductDatabase customerProductDatabase;
+    private ProductDatabase productsDatabase; // should be final
+    private CustomerProductDatabase customerProductDatabase; // should be final
 
     public EmployeeRole() {
     }
@@ -58,7 +58,7 @@ public class EmployeeRole {
 
     }
 
-    public CustomerProduct[] getListOfPurchasingOperations() throws IOException {
+    public CustomerProduct[] getListOfPurchasingOperations() throws IOException { // Use try catch
         ArrayList<CustomerProduct> c = new ArrayList<>();
         String line;// to read a line as a string from the file.
         String[] splitted;
@@ -86,6 +86,7 @@ public class EmployeeRole {
 
             }
         }
+        scan.close();
 
         CustomerProduct[] customer = new CustomerProduct[c.size()];
         for (int i = 0; i < c.size(); i++) {

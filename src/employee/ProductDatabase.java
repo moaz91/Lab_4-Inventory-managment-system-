@@ -24,8 +24,6 @@ public class ProductDatabase {
     // ------------------------constructor------------------------------------------
     public ProductDatabase(String filename) {
         this.filename = filename;
-        this.records = new ArrayList<>();// --------review.............
-
     }
 
     // ------------------------getters-setters------------------------------------------
@@ -53,9 +51,11 @@ public class ProductDatabase {
                     records.add(p);
                 }
             }
+            br.close();
         } catch (IOException e) {
             System.out.println("Error reading file ");
         }
+
     }
 
     // ------------------------createRecordFrom------------------------------------------
@@ -129,6 +129,7 @@ public class ProductDatabase {
                 Product p = records.get(i);
                 pw.println(p.lineRepresentation());
             }
+            pw.close();
         } catch (IOException e) {
             System.out.println("Error writing to file");
         }

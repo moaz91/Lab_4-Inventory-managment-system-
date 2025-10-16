@@ -13,8 +13,8 @@ import java.time.format.DateTimeFormatter;//dd-MM-yyyy
  */
 public class CustomerProduct {
     // ------------------------variables-------------------------------------------
-    private String customerSSN;
-    private String productID;
+    private final String customerSSN;
+    private final String productID;
     private LocalDate purchaseDate;
     private boolean paid;
 
@@ -28,13 +28,6 @@ public class CustomerProduct {
     // ------------------------getters-setters------------------------------------------
     // ---------------------remove this part if you dont need
     // it---------------------
-    public void setCustomerSSN(String customerSSN) {
-        this.customerSSN = customerSSN;
-    }
-
-    public void setProductID(String productID) {
-        this.productID = productID;
-    }
 
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
