@@ -2,31 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package inventory.mamagement.system;
+package employee;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;//dd-MM-yyyy
-
 
 /**
  *
  * @author AltAWKEl
  */
 public class CustomerProduct {
-    //------------------------variables-------------------------------------------
+    // ------------------------variables-------------------------------------------
     private String customerSSN;
     private String productID;
     private LocalDate purchaseDate;
     private boolean paid;
-//------------------------constructor------------------------------------------
-public CustomerProduct(String customerSSN, String productID, LocalDate purchaseDate) {
+
+    // ------------------------constructor------------------------------------------
+    public CustomerProduct(String customerSSN, String productID, LocalDate purchaseDate) {
         this.customerSSN = customerSSN;
         this.productID = productID;
-        this.purchaseDate = purchaseDate; 
-
+        this.purchaseDate = purchaseDate;
     }
-//------------------------getters-setters------------------------------------------
-//---------------------remove this part if you dont need it---------------------
+
+    // ------------------------getters-setters------------------------------------------
+    // ---------------------remove this part if you dont need
+    // it---------------------
     public void setCustomerSSN(String customerSSN) {
         this.customerSSN = customerSSN;
     }
@@ -38,45 +39,36 @@ public CustomerProduct(String customerSSN, String productID, LocalDate purchaseD
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
-//------------------------methods------------------------------------------
-public String getCustomerSSN(){
-return this.customerSSN;
-}
-public String getProductID(){
-return this.productID;
-}
-public LocalDate getPurchaseDate(){
-return this.purchaseDate;
-} 
-public String lineRepresentation(){
-return this.customerSSN+","+this.productID+","+this.purchaseDate+","+this.paid;
-} 
-public boolean isPaid(){
-return this.paid;
-}
-public void setPaid(boolean paid){
-this.paid=paid;
-}
-public String getSearchKey(){
-     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String formattedDate = this.purchaseDate.format(formatter);
-        return this.customerSSN+"," + this.productID+","+formattedDate;
-}
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    // ------------------------methods------------------------------------------
+    public String getCustomerSSN() {
+        return this.customerSSN;
+    }
+
+    public String getProductID() {
+        return this.productID;
+    }
+
+    public LocalDate getPurchaseDate() {
+        return this.purchaseDate;
+    }
+
+    public String lineRepresentation() {
+        return this.customerSSN + "," + this.productID + "," + this.purchaseDate + "," + this.paid;
+    }
+
+    public boolean isPaid() {
+        return this.paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public String getSearchKey() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = this.purchaseDate.format(formatter);
+        return this.customerSSN + "," + this.productID + "," + formattedDate;
+    }
+
 }
