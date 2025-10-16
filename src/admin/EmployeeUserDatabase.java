@@ -12,7 +12,8 @@ public class EmployeeUserDatabase {
 
     public EmployeeUserDatabase(String filename) {
         this.filename = filename;
-        this.records = new ArrayList<>();
+        this.records = new ArrayList<>();//if we removed this it will give Exception in thread "main" java.lang.NullPointerException
+                                         // because you are trying to use a list that was never created
     }
 
     public void readFromFile() {
@@ -28,10 +29,13 @@ public class EmployeeUserDatabase {
         } catch (FileNotFoundException ex) {
             System.err.println("File not found: " + filename);
         } // check if file exists or not
+        // Scanner is closed automaticaly by the try resources
+        
     }
 
     public EmployeeUser createRecordFrom(String line) {
-        // add if the line is "\n" return null
+        if(line==null)
+            return null;
         String[] field = line.split(",");
         EmployeeUser employee = new EmployeeUser(field[0], field[1], field[2], field[3], field[4]);
         return employee;
@@ -65,14 +69,18 @@ public class EmployeeUserDatabase {
     }
 
     public void deleteRecord(String key) {
-        records.remove(getRecord(key));
+        EmployeeUser removeUser= getRecord(key);
+        if(removeUser!=null)//check if the employee with that Id exists or not
+            records.remove(removeUser);
+        else
+            System.out.println("Unable to remove: Record not found");
     }
 
     public void saveToFile() {
         try (FileWriter writer = new FileWriter(filename)) {
             for (EmployeeUser employee : records) {
                 writer.write(employee.lineRepresentation() + "\n");
-            }
+            }//writer.close is handled by the try-with-resources
         } catch (Exception e) {
             System.err.println("Error saving to file: " + e.getMessage());
         }
