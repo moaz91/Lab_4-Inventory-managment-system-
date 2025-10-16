@@ -3,7 +3,7 @@ package admin;
 import java.util.ArrayList;
 
 public class AdminRole {
-    private EmployeeUserDatabase database;
+    private EmployeeUserDatabase database; // association type
 
     public AdminRole() {
         database = new EmployeeUserDatabase("Employees.txt");
@@ -19,9 +19,9 @@ public class AdminRole {
     // ================ Methods ================
 
     public void addEmployee(String employeeId, String name, String email, String address, String phoneNumber) {
-        EmployeeUser newEmployee = new EmployeeUser(employeeId, name, email, address, phoneNumber);
 
-        // ADD TRY CATCH
+        // check id using contains method
+        EmployeeUser newEmployee = new EmployeeUser(employeeId, name, email, address, phoneNumber);
         database.insertRecord(newEmployee);
     }
 

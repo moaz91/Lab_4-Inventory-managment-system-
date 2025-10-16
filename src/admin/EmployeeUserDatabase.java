@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EmployeeUserDatabase {
- private ArrayList<EmployeeUser> records;
+    private ArrayList<EmployeeUser> records;
     private final String filename;
 
     public EmployeeUserDatabase(String filename) {
@@ -21,16 +21,17 @@ public class EmployeeUserDatabase {
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
                 EmployeeUser employee = createRecordFrom(line);
-                if (employee != null) {//there might be an empty line in the file by mistake
+                if (employee != null) { // there might be an empty line in the file by mistake
                     records.add(employee);
                 }
             }
         } catch (FileNotFoundException ex) {
             System.err.println("File not found: " + filename);
-        }//check if file exists or not
+        } // check if file exists or not
     }
 
     public EmployeeUser createRecordFrom(String line) {
+        // add if the line is "\n" return null
         String[] field = line.split(",");
         EmployeeUser employee = new EmployeeUser(field[0], field[1], field[2], field[3], field[4]);
         return employee;
@@ -68,11 +69,11 @@ public class EmployeeUserDatabase {
     }
 
     public void saveToFile() {
-        try(FileWriter writer = new FileWriter(filename)){
-        for (EmployeeUser employee : records) {
-            writer.write(employee.lineRepresentation()+"\n");
-        }
-        }catch(Exception e){
+        try (FileWriter writer = new FileWriter(filename)) {
+            for (EmployeeUser employee : records) {
+                writer.write(employee.lineRepresentation() + "\n");
+            }
+        } catch (Exception e) {
             System.err.println("Error saving to file: " + e.getMessage());
         }
     }
