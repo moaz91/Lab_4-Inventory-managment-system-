@@ -2,21 +2,21 @@ package admin;
 
 public class EmployeeUser {
 private final String  employeeId; 
-    private final String Name;
-    private final String Email;
-    private final String Address;
-    private final String PhoneNumber;//we can't change them so final
+    private final String name;
+    private final String email;
+    private final String address;
+    private final String phoneNumber;//we can't change them so final
 
-    public EmployeeUser(String employeeId, String Name, String Email, String Address, String PhoneNumber) {
+    public EmployeeUser(String employeeId, String name, String email, String address, String phoneNumber) {
         this.employeeId = employeeId;
-        this.Name = Name;
-        this.Email = Email;
-        this.Address = Address;
-        this.PhoneNumber = PhoneNumber;
+        this.name = name;
+        this.Email = email;
+        this.Address = address;
+        this.PhoneNumber = phoneNumber;
     }
 
     public String lineRepresentation(){
-        return this.employeeId +","+this.Name +","+this.Email+","+this.Address+","+this.PhoneNumber;
+        return this.employeeId +","+this.name +","+this.email+","+this.address+","+this.phoneNumber;
     }
     public String getSearchKey(){
         return this.employeeId;
