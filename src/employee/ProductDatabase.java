@@ -56,18 +56,14 @@ public void readFromFile() {
     }
 //------------------------createRecordFrom------------------------------------------
 public Product createRecordFrom(String line) {
-        Product p=new Product();//--....................<review>_....................
+         Product p;
         String[] parts = line.split(",");
         if(parts.length!=6)
         { System.out.print("wrong");
-        return null;}
+          p=null;        }
         else
-        p.setproductID(parts[0].trim());
-        p.setproductName(parts[1].trim());
-        p.setmanufacturerName(parts[2].trim());
-        p.setsupplierName(parts[3].trim());
-        p.setquantity(Integer.parseInt(parts[4].trim()));
-        p.setprice(Float.parseFloat(parts[5].trim()));
+    p=new Product(parts[0].trim(),parts[1].trim(),parts[2].trim(),parts[3].trim(),Integer.parseInt(parts[4].trim()),Float.parseFloat(parts[5].trim()));
+      
  return p;
     }
 //------------------------returnAllRecords------------------------------------------
