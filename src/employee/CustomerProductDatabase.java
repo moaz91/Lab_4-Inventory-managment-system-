@@ -34,14 +34,14 @@ public class CustomerProductDatabase {
      {break;} else {
          records.add(createRecordFrom(line));
         }
-          System.out.println(records);//I made a new toString method to override the one that produces a hashcode.
+       
       }
       }
       catch(FileNotFoundException e)
       {System.out.println("File not found!");}}
     
     public CustomerProduct createRecordFrom(String line)
-        {String[]splitted;
+    {String[]splitted;
      splitted=line.split(",");
       if(splitted.length!=4) 
       {System.out.println("The file is not written correctly.");//Not all fields are written.
@@ -51,8 +51,11 @@ public class CustomerProductDatabase {
      //also if you replace dd with DD, it will be wrong, beacuse DD would be the day of the year like 1-365. And YY means week based year.
  return new CustomerProduct(splitted[0],splitted[1],LocalDate.parse(splitted[2],formatter) ,Boolean.parseBoolean(splitted[3]));}
       }
+    
     public ArrayList<CustomerProduct> returnAllRecords()
-    {return records;}
+    {if(records!=null)
+        return records;
+    else return null;}
     
 public boolean contains(String key)
 {return getRecord(key) != null;}
@@ -60,21 +63,21 @@ public boolean contains(String key)
 public CustomerProduct getRecord(String key)
 {
   for(int i=0;i<records.size();i++)
-{String line= records.get(i).toSpecialString();// we convert the object in arraylist to string and then compare it with the key.
+{String line= records.get(i).getSearchKey();// we convert the object in arraylist to string and then compare it with the key.
 if(line.equals(key)) {System.out.println("Found at index: "+i); return records.get(i);}}
     System.out.println("Not Found."); return null;
 }
 
 public void insertRecord(CustomerProduct record)
-{if(!contains(record.toSpecialString()))
+{if(!contains(record.getSearchKey()))
     records.add(record);
 else System.out.println("The record is already there.");
-    System.out.println(records);}
+  }
 
 public void deleteRecord(String key)
 {CustomerProduct c=getRecord(key);
 if(c!=null) records.remove(c);
-    System.out.println(records);
+
 }
 
 public void saveToFile() throws IOException 
@@ -93,6 +96,3 @@ public void saveToFile() throws IOException
         }
 
 }
-
-
-
