@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class EmployeeUserDatabase {
  private ArrayList<EmployeeUser> records;
-    private String filename;
+    private final String filename;
 
     public EmployeeUserDatabase(String filename) {
         this.filename = filename;
