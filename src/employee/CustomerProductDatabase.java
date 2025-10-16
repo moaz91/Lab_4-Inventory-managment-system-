@@ -41,22 +41,15 @@ public class CustomerProductDatabase {
       {System.out.println("File not found!");}}
     
     public CustomerProduct createRecordFrom(String line)
-    {String[]splitted;
-    String customerSSN,productID;
-    LocalDate purchaseDate;
-    boolean paid;
+        {String[]splitted;
      splitted=line.split(",");
       if(splitted.length!=4) 
       {System.out.println("The file is not written correctly.");//Not all fields are written.
       return null;}
       else{
-     customerSSN=splitted[0];
-     productID=splitted[1];
      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");// The default LocalDate is YYYY/MM/DD, so we need to tell it to read the date in the form of dd-MM-yyyy
      //also if you replace dd with DD, it will be wrong, beacuse DD would be the day of the year like 1-365. And YY means week based year.
-     purchaseDate=LocalDate.parse(splitted[2],formatter); 
-     paid=Boolean.parseBoolean(splitted[3]);
-     return new CustomerProduct(customerSSN,productID,purchaseDate,paid);}
+ return new CustomerProduct(splitted[0],splitted[1],LocalDate.parse(splitted[2],formatter) ,Boolean.parseBoolean(splitted[3]));}
       }
     public ArrayList<CustomerProduct> returnAllRecords()
     {return records;}
@@ -100,5 +93,6 @@ public void saveToFile() throws IOException
         }
 
 }
+
 
 
