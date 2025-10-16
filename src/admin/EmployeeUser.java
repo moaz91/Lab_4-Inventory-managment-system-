@@ -10,9 +10,9 @@ private final String  employeeId;
     public EmployeeUser(String employeeId, String name, String email, String address, String phoneNumber) {
         this.employeeId = employeeId;
         this.name = name;
-        this.Email = email;
-        this.Address = address;
-        this.PhoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 
     public String lineRepresentation(){
