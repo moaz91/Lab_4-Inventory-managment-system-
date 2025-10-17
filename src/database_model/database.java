@@ -20,10 +20,6 @@ public abstract class Database<T> {
     // ----------- ABSTRACT METHODS (implemented by subclasses) -----------
     protected abstract T createRecordFrom(String line);
 
-    protected abstract String lineRepresentation(T record);
-
-    protected abstract String getSearchKey(T record);
-
     // ----------------- COMMON IMPLEMENTATION ----------------------------
 
     /** Reads all records from the file into memory. */
