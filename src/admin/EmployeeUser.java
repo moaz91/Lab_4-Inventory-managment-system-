@@ -1,6 +1,8 @@
 package admin;
 
-public class EmployeeUser {
+import database_model.Representation;
+
+public class EmployeeUser implements Representation  {
     private final String employeeId;
     private final String name;
     private String email;
@@ -17,11 +19,11 @@ public class EmployeeUser {
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
-
+@override
     public String lineRepresentation() {
         return this.employeeId + "," + this.name + "," + this.email + "," + this.address + "," + this.phoneNumber;
     }
-
+@override
     public String getSearchKey() {
         return this.employeeId;
     }
