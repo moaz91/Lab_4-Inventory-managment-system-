@@ -13,38 +13,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import database_model.Database;
+
 /**
  *
  * @author Nour
  */
-public class CustomerProductDatabase {
+public class CustomerProductDatabase extends Database<CustomerProduct> {
+    public CustomerProductDatabase(String filename) {
+        super(filename);
+        // TODO Auto-generated constructor stub
+    }
+
     private ArrayList<CustomerProduct> records = new ArrayList<>();
     private String fileName;
-
-    public CustomerProductDatabase(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public void readFromFile() {
-        String line; // to read a line as a string from the file.
-        try {
-            File file = new File(fileName);
-            Scanner scan = new Scanner(file);
-            while (scan.hasNextLine()) // While the file has a next line (will read until no new line is found).
-            {
-                line = scan.nextLine();
-                if (null == createRecordFrom(line)) {
-                    break;
-                } else {
-                    records.add(createRecordFrom(line));
-                }
-
-            }
-            scan.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found!");
-        }
-    }
 
     public CustomerProduct createRecordFrom(String line) {
         String[] splitted;
@@ -66,55 +48,16 @@ public class CustomerProductDatabase {
         }
     }
 
-    public ArrayList<CustomerProduct> returnAllRecords() {
-        if (records != null)
-            return records;
-        else
-            return null;
+    @Override
+    protected String lineRepresentation(CustomerProduct record) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'lineRepresentation'");
     }
 
-    public boolean contains(String key) {
-        return getRecord(key) != null;
-    }
-
-    public CustomerProduct getRecord(String key) {
-        for (int i = 0; i < records.size(); i++) {
-            String line = records.get(i).getSearchKey();// we convert the object in arraylist to string and then compare
-                                                        // it with the key.
-            if (line.equals(key)) {
-                System.out.println("Found at index: " + i);
-                return records.get(i);
-            }
-        }
-        System.out.println("Not Found.");
-        return null;
-    }
-
-    public void insertRecord(CustomerProduct record) {
-        if (!contains(record.getSearchKey()))
-            records.add(record);
-        else
-            System.out.println("The record is already there.");
-    }
-
-    public void deleteRecord(String key) {
-        CustomerProduct c = getRecord(key);
-        if (c != null)
-            records.remove(c);
-
-    }
-
-    public void saveToFile() throws IOException {
-
-        FileWriter writer = new FileWriter(fileName);
-        for (int i = 0; i < records.size(); i++) {
-            writer.write(records.get(i).toString());
-            if (i != records.size() - 1)
-                writer.write("\n");
-        }
-
-        writer.close();
-
+    @Override
+    protected String getSearchKey(CustomerProduct record) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSearchKey'");
     }
 
 }
