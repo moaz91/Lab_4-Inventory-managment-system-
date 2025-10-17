@@ -27,7 +27,7 @@ public abstract class Database<T> {
     // ----------------- COMMON IMPLEMENTATION ----------------------------
 
     /** Reads all records from the file into memory. */
-    public void readFromFile() throws IOException {
+    /*public void readFromFile() throws IOException {
         records.clear();
         Path path = Paths.get(filename);
         if (Files.notExists(path))
@@ -40,6 +40,27 @@ public abstract class Database<T> {
             T obj = createRecordFrom(line.trim());
             if (obj != null)
                 records.add(obj);
+        }
+    }*/
+    public void readFromFile() {
+        String line;// to read a line as a string from the file.
+        records.clear();
+        try {
+            File file = new File(fileName);
+            Scanner scan = new Scanner(file);
+            while (scan.hasNextLine()) // While the file has a next line (will read until no new line is found).
+            {
+                line = scan.nextLine();
+                if (null == createRecordFrom(line)) {
+                    break;
+                } else {
+                    records.add(createRecordFrom(line));
+                }
+
+            }
+            scan.close();
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
         }
     }
 
