@@ -49,16 +49,4 @@ public class ProductDatabase extends Database<Product> {
         return p;
     }
 
-    @Override
-    protected String lineRepresentation(Product record) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'lineRepresentation'");
-    }
-
-    @Override
-    protected String getSearchKey(Product record) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSearchKey'");
-    }
-
 }
