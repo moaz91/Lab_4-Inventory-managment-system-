@@ -32,7 +32,7 @@ public class EmployeeRole {
             productsDatabase.insertRecord(p);
             productsDatabase.saveToFile();
         } catch (IOException e) {
-            e.printStackTrace();
+          system.out.println(e.getMessage());
         }
     }
 
@@ -43,7 +43,7 @@ public class EmployeeRole {
         try {
             productsDatabase.readFromFile();
         } catch (IOException e) {
-            e.printStackTrace();
+          system.out.println(e.getMessage());
         }
         p = productsDatabase.returnAllRecords();
         Product[] products = new Product[p.size()];
@@ -58,7 +58,7 @@ public class EmployeeRole {
             customerProductDatabase.readFromFile();// composition, can not inherit from more than one class, so we used
                                                    // composition here.
         } catch (IOException e) {
-            e.printStackTrace();
+            system.out.println(e.getMessage());
         }
         c = customerProductDatabase.returnAllRecords();
         CustomerProduct[] customer = new CustomerProduct[c.size()];
@@ -83,7 +83,7 @@ public class EmployeeRole {
                 productsDatabase.insertRecord(p);
                 productsDatabase.saveToFile();
             } catch (IOException e) {
-                e.printStackTrace();
+               system.out.println(e.getMessage());
             }
             System.out.println("The purchase was made successfully!");
             return true;
@@ -96,9 +96,8 @@ public class EmployeeRole {
         if (returnDate.isBefore(purchaseDate))
             return -1;
 
-        String customerKey = customerSSN + "," + productID + "," + String.format("%02d-%02d-%04d",
-                purchaseDate.getDayOfMonth(), purchaseDate.getMonthValue(), purchaseDate.getYear());
-        if (!customerProductDatabase.contains(customerKey))
+       CustomerProduct c=new CustomerProduct(customerSSN,productID,purchaseDate);
+        if (!customerProductDatabase.contains(c.getSearchKey())
             return -1;
         // check if product is found or not
 
@@ -110,7 +109,7 @@ public class EmployeeRole {
         Product productMatch = productsDatabase.getRecord(productID);
 
         if (productMatch != null)
-            productMatch.setQuantity(productMatch.getQuantity() + 1);
+            productMatch.returnUnit();
         else
             return -1;
 
@@ -118,10 +117,10 @@ public class EmployeeRole {
             productsDatabase.deleteRecord(productID);
             productsDatabase.insertRecord(productMatch);
             productsDatabase.saveToFile();
-            customerProductDatabase.deleteRecord(customerKey);
+            customerProductDatabase.deleteRecord(c.getSearchKey());
             customerProductDatabase.saveToFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            system.out.println(e.getMessage());
         }
         // update both customerproduct anf product databases files
         return productMatch.getPrice();
@@ -134,7 +133,7 @@ public class EmployeeRole {
         for (CustomerProduct record : records) {
             if (record.getCustomerSSN().equals(customerSSN) && record.getPurchaseDate().equals(purchaseDate)) {
                 if (record.isPaid()) {
-                    return false;
+                    return true;
                 } // check if its paid or not
                 record.setPaid(true);
                 try {
@@ -142,7 +141,7 @@ public class EmployeeRole {
                     customerProductDatabase.insertRecord(record);// insert the new updated record
                     customerProductDatabase.saveToFile();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                   system.out.println(e.getMessage());
                 }
                 return true;
             } // not paid then set it to paid
@@ -155,7 +154,8 @@ public class EmployeeRole {
             ProductDatabase.saveToFile();
             CustomerProductDatabase.saveToFile();
         } catch (IOException e) {
-            e.printStackTrace();
+         system.out.println(e.getMessage());
         }
     }
 }
+
