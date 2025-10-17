@@ -4,15 +4,8 @@
  */
 package employee;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import database_model.Database;
 
 /**
@@ -24,9 +17,6 @@ public class CustomerProductDatabase extends Database<CustomerProduct> {
         super(filename);
         // TODO Auto-generated constructor stub
     }
-
-    private ArrayList<CustomerProduct> records = new ArrayList<>();
-    private String fileName;
 
     public CustomerProduct createRecordFrom(String line) {
         String[] splitted;
