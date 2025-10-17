@@ -27,6 +27,7 @@ public class AdminRole {
     }
 
     public EmployeeUser[] getListOfEmployees() {
+        database.readFromFile(); //will read from file first so that records are not empty.
         ArrayList<EmployeeUser> list = database.returnAllRecords(); // Used ArrayList beacause it can change size
                                                                     // dynamically and offers convenient methods
                                                                     // (add,remove,search,filter)
