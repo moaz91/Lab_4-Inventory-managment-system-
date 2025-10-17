@@ -76,6 +76,61 @@ public class EmployeeRole {
     
     }
     
-    
+    public double returnProduct(String customerSSN, String productID,LocalDate purchaseDate ,LocalDate returnDate){
+     // checl if return date is before purchase or not
+      if(returnDate.isBefore(purchaseDate))
+      return -1; 
 
+      String customerKey =customerSSN +"," +productID + ","+ String.format("%02d-%02d-%04d", purchaseDate.getDayOfMonth()
+      ,purchaseDate.getMonthValue(),purchaseDate.getYear());
+      if(!customerProductDatabase.contains(customerKey))
+      return -1;
+    //check if product is found or not
+
+      if(ChronoUnit.DAYS.between(purchaseDate,returnDate)>14)
+      return -1;
+      //ChronoUnit.DAYS it measure times in units like days,month, years
+      //.between calculate the difference in time between two local objects
+
+      Product productMatch = productsDatabase.getRecord(productID);
+
+      
+      if(productMatch!=null)
+      productMatch.setQuantity(productMatch.getQuantity()+1);
+      else
+      return -1;
+
+
+      productsDatabase.deleteRecord(productID);
+      productsDatabase.insertRecord(productMatch);
+      productsDatabase.saveToFile();
+      customerProductDatabase.deleteRecord(customerKey);
+      customerProductDatabase.saveToFile();
+        // update both customerproduct anf product databases files
+      return productMatch.getPrice();
+      
 }
+     public boolean applyPayment(String customerSSN, LocalDate purchaseDate){
+        ArrayList<CustomerProduct> records = customerProductDatabase.returnAllRecords();
+
+        for(CustomerProduct record : records){
+            if(record.getCustomerSSN().equals(customerSSN)&& record.getPurchaseDate().equals(purchaseDate)){
+                if(record.isPaid()){
+                    return false;
+                }//check if its paid or not
+                record.setPaid(true);
+                customerProductDatabase.deleteRecord(record.getSearchKey());//deletes old record
+                customerProductDatabase.insertRecord(record);//insert the new updated record
+                customerProductDatabase.saveToFile();
+                return true;
+            }// not paid then set it to paid
+        }
+        return false;//record is not found
+    }
+    
+    public void logout(){
+        ProductDatabase.saveToFile();
+        CustomerProductDatabase.saveToFile();
+    }
+}
+
