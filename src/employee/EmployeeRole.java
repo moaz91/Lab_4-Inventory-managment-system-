@@ -17,83 +17,65 @@ import java.util.Scanner;
  * @author Nour
  */
 public class EmployeeRole {
-    private ProductDatabase productsDatabase; // should be final
-    private CustomerProductDatabase customerProductDatabase; // should be final
-
+    private final ProductDatabase productsDatabase; //final because the filenames will not change.
+    private final CustomerProductDatabase customerProductDatabase;
+    
     public EmployeeRole() {
+        productsDatabase=new ProductDatabase("Products.txt");//composition
+          customerProductDatabase=new CustomerProductDatabase("CustomersProducts.txt");//composition
     }
 
     public void addProduct(String productID, String productName, String manufacturerName, String supplierName,
-            int quantity, float price) throws IOException {
-        FileWriter writer = new FileWriter("Products.txt", true);
-        writer.write(
-                "\n" + productID + "," + productName + "," + manufacturerName + "," + supplierName + "," + quantity
-                        + "," + price);
-        writer.close();
+            int quantity, float price) {
+        Product p=new Product(productID,productName,manufacturerName,supplierName,quantity,price);//composition
+        productsDatabase.insertRecord(p);
+        productsDatabase.saveToFile();
+                
     }
 
-    public Product[] getListOfProducts() throws IOException {
+    public Product[] getListOfProducts()  {
         ArrayList<Product> p = new ArrayList<>();
-        String line;// to read a line as a string from the file.
-        String[] splitted;
-
-        File file = new File("Product.txt");
-        Scanner scan = new Scanner(file);
-        while (scan.hasNextLine()) // While the file has a next line (will read until no new line is found).
-        {
-            line = scan.nextLine();
-            splitted = line.split(",");
-            if (splitted.length != 6) {
-                System.out.println("File is not written correctly.");
-                break;
-            }
-            p.add(new Product(splitted[0], splitted[1], splitted[2], splitted[3], Integer.parseInt(splitted[4]),
-                    Float.parseFloat(splitted[5])));
-        }
+        //composition, can not inherit from more than one class, so we used composition here.
+        productsDatabase.readFromFile();
+        p=productsDatabase.returnAllRecords();
         Product[] products = new Product[p.size()];
-        for (int i = 0; i < p.size(); i++) {
-            products[i] = p.get(i);
-        }
+        p.toArray(products);
         return products;
 
     }
 
-    public CustomerProduct[] getListOfPurchasingOperations() throws IOException { // Use try catch
-        ArrayList<CustomerProduct> c = new ArrayList<>();
-        String line;// to read a line as a string from the file.
-        String[] splitted;
-
-        File file = new File("CustomersProducts.txt");
-        Scanner scan = new Scanner(file);
-        while (scan.hasNextLine()) // While the file has a next line (will read until no new line is found).
-        {
-            line = scan.nextLine();
-            splitted = line.split(",");
-            if (splitted.length != 4) {
-                System.out.println("The file is not written correctly.");// Not all fields are written.
-                return null;
-            } else {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");// The default LocalDate is
-                                                                                        // YYYY/MM/DD, so we need to
-                                                                                        // tell it to read the date in
-                                                                                        // the form of dd-MM-yyyy
-                // also if you replace dd with DD, it will be wrong, beacuse DD would be the day
-                // of the year like 1-365. And YY means week based year.
-                CustomerProduct newCustomerProduct = new CustomerProduct(splitted[0], splitted[1],
-                        LocalDate.parse(splitted[2], formatter));
-                newCustomerProduct.setPaid(Boolean.parseBoolean(splitted[3]));
-                c.add(newCustomerProduct);
-
-            }
-        }
-        scan.close();
-
-        CustomerProduct[] customer = new CustomerProduct[c.size()];
-        for (int i = 0; i < c.size(); i++) {
-            customer[i] = c.get(i);
-        }
-        return customer;
+    public CustomerProduct[] getListOfPurchasingOperations()  { 
+     ArrayList<CustomerProduct> c = new ArrayList<>();
+       customerProductDatabase.readFromFile();//composition, can not inherit from more than one class, so we used composition here.
+      c=customerProductDatabase.returnAllRecords();
+      CustomerProduct[] customer = new CustomerProduct[c.size()];
+      c.toArray(customer);
+      return customer;
+      
+       
 
     }
+    
+    public boolean purchaseProduct(String customerSSN, String productID, LocalDate purchaseDate)
+    {  Product p= productsDatabase.getRecord(productID);
+    if(p.getQuantity()==0) //checks if the product is in stock.
+    {System.out.println("The product is out of stock.");
+    return false;}
+    else
+    {p.sellUnit();// decrements quantity by one.
+    CustomerProduct c=new CustomerProduct(customerSSN,productID,purchaseDate);
+    customerProductDatabase.insertRecord(c);
+    customerProductDatabase.saveToFile();
+    productsDatabase.deleteRecord(p.getSearchKey());
+    productsDatabase.insertRecord(p);
+    productsDatabase.saveToFile();
+        System.out.println("The purchase was made successfully!");
+        return true;
+    }
+    
+    
+    }
+    
+    
 
 }
