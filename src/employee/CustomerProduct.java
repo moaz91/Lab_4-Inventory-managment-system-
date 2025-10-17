@@ -4,6 +4,7 @@
  */
 package employee;
 
+import database_model.Representation;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;//dd-MM-yyyy
 
@@ -11,7 +12,7 @@ import java.time.format.DateTimeFormatter;//dd-MM-yyyy
  *
  * @author AltAWKEl
  */
-public class CustomerProduct {
+public class CustomerProduct implements Representation{
     // ------------------------variables-------------------------------------------
     private final String customerSSN;
     private final String productID;
