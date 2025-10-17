@@ -23,6 +23,7 @@ public class AdminRole {
         // check id using contains method
         EmployeeUser newEmployee = new EmployeeUser(employeeId, name, email, address, phoneNumber);
         database.insertRecord(newEmployee);
+        database.saveToFile(); //because addEmployee should also add to file not only arraylist.
     }
 
     public EmployeeUser[] getListOfEmployees() {
