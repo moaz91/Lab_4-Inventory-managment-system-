@@ -1,6 +1,8 @@
 package employee;
 
-public class Product {
+import database_model.Representation;
+
+public class Product implements Representation{
     private String productID;
     private String productName;
     private String manufacturerName;
@@ -28,7 +30,7 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
+@override
     public String getSearchKey() {
         return productID;
     }
@@ -50,7 +52,7 @@ public class Product {
     }
 
     // ================ Methods ================
-
+@override
     public String lineRepresentation() { // Returns a comma-separated line of product data
         return productID + "," + productName + "," + manufacturerName + "," +
                 supplierName + "," + quantity + "," + price;
