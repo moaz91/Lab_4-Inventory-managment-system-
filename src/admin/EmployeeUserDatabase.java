@@ -19,16 +19,4 @@ public class EmployeeUserDatabase extends Database<EmployeeUser> {
         return employee;
     }
 
-    @Override
-    protected String lineRepresentation(EmployeeUser record) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'lineRepresentation'");
-    }
-
-    @Override
-    protected String getSearchKey(EmployeeUser record) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSearchKey'");
-    }
-
 }
