@@ -38,16 +38,5 @@ public class CustomerProductDatabase extends Database<CustomerProduct> {
         }
     }
 
-    @Override
-    protected String lineRepresentation(CustomerProduct record) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'lineRepresentation'");
-    }
-
-    @Override
-    protected String getSearchKey(CustomerProduct record) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSearchKey'");
-    }
-
 }
+
