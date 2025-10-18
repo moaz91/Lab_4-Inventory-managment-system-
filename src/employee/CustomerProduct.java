@@ -46,7 +46,7 @@ public class CustomerProduct implements Representation{
     public LocalDate getPurchaseDate() {
         return this.purchaseDate;
     }
-@override
+@Override
     public String lineRepresentation() {
         return this.customerSSN + "," + this.productID + "," + this.purchaseDate + "," + this.paid;
     }
@@ -58,7 +58,7 @@ public class CustomerProduct implements Representation{
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
-@override
+@Override
     public String getSearchKey() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = this.purchaseDate.format(formatter);
