@@ -191,7 +191,7 @@ public class Main {
                         LocalDate purchaseDate = LocalDate.parse(scanner.nextLine().trim());
 
                         employee.purchaseProduct(customerSSN, productId, purchaseDate);
-                        System.out.println("Product purchased successfully.");
+                        //System.out.println("Product purchased successfully.");
                     } catch (DateTimeParseException e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
                     } catch (Exception e) {
@@ -211,7 +211,7 @@ public class Main {
                         LocalDate rDate = LocalDate.parse(scanner.nextLine().trim());
 
                         employee.returnProduct(custSSN, prodId, pDate, rDate);
-                        System.out.println("Product returned successfully.");
+                   
                     } catch (DateTimeParseException e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
                     } catch (Exception e) {
@@ -227,7 +227,7 @@ public class Main {
                         } else {
                             System.out.println("Purchasing operations:");
                             for (CustomerProduct cp : purchases) {
-                                System.out.println(" - " + cp.lineRepresentation() + ", Paid: " + cp.isPaid());
+                                System.out.println(" - " + cp.lineRepresentation());
                             }
                         }
                     } catch (Exception e) {
@@ -242,12 +242,8 @@ public class Main {
                         System.out.print("Enter payment date (YYYY-MM-DD): ");
                         LocalDate paymentDate = LocalDate.parse(scanner.nextLine().trim());
 
-                        boolean applied = employee.applyPayment(custPaymentId, paymentDate);
-                        if (applied) {
-                            System.out.println("Payment applied successfully.");
-                        } else {
-                            System.out.println("Payment could not be applied (record not found or already paid).");
-                        }
+                         employee.applyPayment(custPaymentId, paymentDate);
+                        
                     } catch (DateTimeParseException e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
                     } catch (Exception e) {
