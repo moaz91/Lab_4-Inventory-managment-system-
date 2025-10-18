@@ -4,10 +4,14 @@
  */
 package employee;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -47,10 +51,10 @@ public class EmployeeRole {
 
     public CustomerProduct[] getListOfPurchasingOperations() {
         ArrayList<CustomerProduct> c = new ArrayList<>();
-      
+   
             customerProductDatabase.readFromFile();// composition, can not inherit from more than one class, so we used
                                                    // composition here.
-        
+      
         c = customerProductDatabase.returnAllRecords();
         CustomerProduct[] customer = new CustomerProduct[c.size()];
         c.toArray(customer);
@@ -58,9 +62,10 @@ public class EmployeeRole {
 
     }
 
-    public boolean purchaseProduct(String customerSSN, String productID, LocalDate purchaseDate)  {
+    public boolean purchaseProduct(String customerSSN, String productID, LocalDate purchaseDate) throws IOException {
         Product p = productsDatabase.getRecord(productID);
-        if (p.getQuantity() == 0) // checks if the product is in stock.
+        if(p!=null) 
+        {if (p.getQuantity() == 0) // checks if the product is in stock.
         {
             System.out.println("The product is out of stock.");
             return false;
@@ -69,73 +74,82 @@ public class EmployeeRole {
             CustomerProduct c = new CustomerProduct(customerSSN, productID, purchaseDate);
            
                 customerProductDatabase.insertRecord(c);
-                try{
                 customerProductDatabase.saveToFile();
                 productsDatabase.deleteRecord(p.getSearchKey());
                 productsDatabase.insertRecord(p);
-                productsDatabase.saveToFile();}
-                 catch(IOException e)
-       {System.out.println(e.getMessage());}
+                productsDatabase.saveToFile();
             
             System.out.println("The purchase was made successfully!");
             return true;
         }
 
+    } 
+        else{ System.out.println("Product not found!");
+        return false;}
     }
+       
 
-    public double returnProduct(String customerSSN, String productID, LocalDate purchaseDate, LocalDate returnDate) {
+    public double returnProduct(String customerSSN, String productID, LocalDate purchaseDate, LocalDate returnDate) throws IOException {
         // checl if return date is before purchase or not
+        
         if (returnDate.isBefore(purchaseDate))
-            return -1;
+        {System.out.println("Return date is incorrect.");
+            return -1;}
 
        CustomerProduct c=new CustomerProduct(customerSSN,productID,purchaseDate);
-        if (!customerProductDatabase.contains(c.getSearchKey()))
-            return -1;
+           customerProductDatabase.readFromFile();// composition, can not inherit from more than one class, so we used
+                                                   // composition here.
+        if (customerProductDatabase.getRecord(c.getSearchKey())==null)
+        {System.out.println("Record not found!");
+            return -1;}
         // check if product is found or not
 
         if (ChronoUnit.DAYS.between(purchaseDate, returnDate) > 14)
-            return -1;
+        {System.out.println("Exceeded the 14 days.");
+            return -1;}
         // ChronoUnit.DAYS it measure times in units like days,month, years
         // .between calculate the difference in time between two local objects
+        productsDatabase.readFromFile();
 
         Product productMatch = productsDatabase.getRecord(productID);
 
         if (productMatch != null)
-            productMatch.returnUnit();
-        else
-            return -1;
-
-     
+        {productMatch.returnUnit();
+        
+              
             productsDatabase.deleteRecord(productID);
             productsDatabase.insertRecord(productMatch);
-            try{
             productsDatabase.saveToFile();
             customerProductDatabase.deleteRecord(c.getSearchKey());
-            customerProductDatabase.saveToFile();}
-             catch(IOException e)
-       {System.out.println(e.getMessage());}
+            customerProductDatabase.saveToFile();
+            System.out.println("The product was returned successfully!");
+           return productMatch.getPrice();
+        }
+        else
+        return -1;
+
+
         
         // update both customerproduct anf product databases files
-        return productMatch.getPrice();
+     
 
     }
 
-    public boolean applyPayment(String customerSSN, LocalDate purchaseDate)  {
+    public boolean applyPayment(String customerSSN, LocalDate purchaseDate) throws IOException {
         ArrayList<CustomerProduct> records = customerProductDatabase.returnAllRecords();
 
         for (CustomerProduct record : records) {
-            if (record.getCustomerSSN().equals(customerSSN) && record.getPurchaseDate().equals(purchaseDate)) {
+            if ((record.getCustomerSSN().equals(customerSSN)) && (record.getPurchaseDate().equals(purchaseDate))) {
                 if (record.isPaid()) {
+                    System.out.println("Already paid.");
                     return true;
                 } // check if its paid or not
                 record.setPaid(true);
                
                     customerProductDatabase.deleteRecord(record.getSearchKey());// deletes old record
                     customerProductDatabase.insertRecord(record);// insert the new updated record
-                    try{
-                    customerProductDatabase.saveToFile();}
-                     catch(IOException e)
-                   {System.out.println(e.getMessage());}
+                    customerProductDatabase.saveToFile();
+                    System.out.println("Payment made successfully!");
                 
                 return true;
             } // not paid then set it to paid
@@ -152,3 +166,4 @@ public class EmployeeRole {
         
     }
 }
+
