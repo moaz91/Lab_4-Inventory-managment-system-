@@ -4,13 +4,10 @@
  */
 package employee;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  *
@@ -26,25 +23,21 @@ public class EmployeeRole {
     }
 
     public void addProduct(String productID, String productName, String manufacturerName, String supplierName,
-            int quantity, float price) {
+            int quantity, float price) throws IOException {
         Product p = new Product(productID, productName, manufacturerName, supplierName, quantity, price);// composition
-        try {
+        
             productsDatabase.insertRecord(p);
             productsDatabase.saveToFile();
-        } catch (IOException e) {
-          system.out.println(e.getMessage());
-        }
+      
     }
 
     public Product[] getListOfProducts() {
         ArrayList<Product> p = new ArrayList<>();
         // composition, can not inherit from more than one class, so we used composition
         // here.
-        try {
+      
             productsDatabase.readFromFile();
-        } catch (IOException e) {
-          system.out.println(e.getMessage());
-        }
+        
         p = productsDatabase.returnAllRecords();
         Product[] products = new Product[p.size()];
         p.toArray(products);
@@ -54,12 +47,10 @@ public class EmployeeRole {
 
     public CustomerProduct[] getListOfPurchasingOperations() {
         ArrayList<CustomerProduct> c = new ArrayList<>();
-        try {
+      
             customerProductDatabase.readFromFile();// composition, can not inherit from more than one class, so we used
                                                    // composition here.
-        } catch (IOException e) {
-            system.out.println(e.getMessage());
-        }
+        
         c = customerProductDatabase.returnAllRecords();
         CustomerProduct[] customer = new CustomerProduct[c.size()];
         c.toArray(customer);
@@ -67,7 +58,7 @@ public class EmployeeRole {
 
     }
 
-    public boolean purchaseProduct(String customerSSN, String productID, LocalDate purchaseDate) {
+    public boolean purchaseProduct(String customerSSN, String productID, LocalDate purchaseDate)  {
         Product p = productsDatabase.getRecord(productID);
         if (p.getQuantity() == 0) // checks if the product is in stock.
         {
@@ -76,15 +67,16 @@ public class EmployeeRole {
         } else {
             p.sellUnit();// decrements quantity by one.
             CustomerProduct c = new CustomerProduct(customerSSN, productID, purchaseDate);
-            try {
+           
                 customerProductDatabase.insertRecord(c);
+                try{
                 customerProductDatabase.saveToFile();
                 productsDatabase.deleteRecord(p.getSearchKey());
                 productsDatabase.insertRecord(p);
-                productsDatabase.saveToFile();
-            } catch (IOException e) {
-               system.out.println(e.getMessage());
-            }
+                productsDatabase.saveToFile();}
+                 catch(IOException e)
+       {System.out.println(e.getMessage());}
+            
             System.out.println("The purchase was made successfully!");
             return true;
         }
@@ -97,7 +89,7 @@ public class EmployeeRole {
             return -1;
 
        CustomerProduct c=new CustomerProduct(customerSSN,productID,purchaseDate);
-        if (!customerProductDatabase.contains(c.getSearchKey())
+        if (!customerProductDatabase.contains(c.getSearchKey()))
             return -1;
         // check if product is found or not
 
@@ -113,21 +105,22 @@ public class EmployeeRole {
         else
             return -1;
 
-        try {
+     
             productsDatabase.deleteRecord(productID);
             productsDatabase.insertRecord(productMatch);
+            try{
             productsDatabase.saveToFile();
             customerProductDatabase.deleteRecord(c.getSearchKey());
-            customerProductDatabase.saveToFile();
-        } catch (IOException e) {
-            system.out.println(e.getMessage());
-        }
+            customerProductDatabase.saveToFile();}
+             catch(IOException e)
+       {System.out.println(e.getMessage());}
+        
         // update both customerproduct anf product databases files
         return productMatch.getPrice();
 
     }
 
-    public boolean applyPayment(String customerSSN, LocalDate purchaseDate) {
+    public boolean applyPayment(String customerSSN, LocalDate purchaseDate)  {
         ArrayList<CustomerProduct> records = customerProductDatabase.returnAllRecords();
 
         for (CustomerProduct record : records) {
@@ -136,13 +129,14 @@ public class EmployeeRole {
                     return true;
                 } // check if its paid or not
                 record.setPaid(true);
-                try {
+               
                     customerProductDatabase.deleteRecord(record.getSearchKey());// deletes old record
                     customerProductDatabase.insertRecord(record);// insert the new updated record
-                    customerProductDatabase.saveToFile();
-                } catch (IOException e) {
-                   system.out.println(e.getMessage());
-                }
+                    try{
+                    customerProductDatabase.saveToFile();}
+                     catch(IOException e)
+                   {System.out.println(e.getMessage());}
+                
                 return true;
             } // not paid then set it to paid
         }
@@ -150,12 +144,11 @@ public class EmployeeRole {
     }
 
     public void logout() {
-        try {
-            ProductDatabase.saveToFile();
-            CustomerProductDatabase.saveToFile();
-        } catch (IOException e) {
-         system.out.println(e.getMessage());
-        }
+       try{
+            productsDatabase.saveToFile();
+           customerProductDatabase.saveToFile();}
+       catch(IOException e)
+       {System.out.println(e.getMessage());}
+        
     }
 }
-
