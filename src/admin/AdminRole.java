@@ -28,11 +28,7 @@ public class AdminRole {
     // ---------------------------- Get List of Employees
     // ----------------------------
     public EmployeeUser[] getListOfEmployees() {
-        try {
-            database.readFromFile(); // may throw IOException
-        } catch (IOException e) {
-            System.out.println("Error reading employee data: " + e.getMessage());
-        }
+        database.readFromFile();
 
         ArrayList<EmployeeUser> list = database.returnAllRecords(); // Used ArrayList beacause it can change size
         // dynamically and offers convenient methods
