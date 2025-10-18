@@ -1,19 +1,23 @@
 package database_model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 //   @param <T> The type of object stored (e.g., EmployeeUser, Product, CustomerProduct)
 
-public abstract class Database<T> {
+public abstract class Database<T extends Representation> // which means that the object T implements what is in the interface Representation
+{
     protected ArrayList<T> records;
-    protected String filename;
+    protected String fileName;
 
-    public Database(String filename) {
-        this.filename = filename;
+    public Database(String fileName) {
+        this.fileName = fileName;
         this.records = new ArrayList<>();
     }
 
@@ -73,7 +77,7 @@ public abstract class Database<T> {
     /** Returns a record with the matching key, or null if not found. */
     public T getRecord(String key) {
         for (T record : records) {
-            if (getSearchKey(record).equals(key))
+            if (record.getSearchKey().equals(key))
                 return record;
         }
         return null;
@@ -81,27 +85,31 @@ public abstract class Database<T> {
 
     /** Inserts a record if it doesn’t already exist. */
     public void insertRecord(T record) {
-        if (!contains(getSearchKey(record))) {
+        if (!contains(record.getSearchKey())) {
             records.add(record);
         }
     }
 
     /** Deletes a record whose key matches. */
     public void deleteRecord(String key) {
-        records.removeIf(r -> getSearchKey(r).equals(key));
+        records.removeIf(r -> r.getSearchKey().equals(key));
+        System.out.println("Remove Successful!");
+        
+        
     }
 
     /** Saves all current records back to the file. */
     public void saveToFile() throws IOException {
-        Path path = Paths.get(filename);
+        Path path = Paths.get(fileName);
         if (Files.notExists(path))
             Files.createFile(path);
 
         List<String> lines = new ArrayList<>();
         for (T record : records) {
-            lines.add(lineRepresentation(record));
+            lines.add(record.lineRepresentation());
         }
 
         Files.write(path, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
     }
 }
+
