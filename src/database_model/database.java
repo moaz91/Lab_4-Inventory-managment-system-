@@ -11,7 +11,8 @@ import java.util.Scanner;
 
 //   @param <T> The type of object stored (e.g., EmployeeUser, Product, CustomerProduct)
 
-public abstract class Database<T extends Representation> // which means that the object T implements what is in the interface Representation
+public abstract class Database<T extends Representation> // which means that the object T implements what is in the
+                                                         // interface Representation
 {
     protected ArrayList<T> records;
     protected String fileName;
@@ -27,36 +28,40 @@ public abstract class Database<T extends Representation> // which means that the
     // ----------------- COMMON IMPLEMENTATION ----------------------------
 
     /** Reads all records from the file into memory. */
-    /*public void readFromFile() throws IOException {
-        records.clear();
-        Path path = Paths.get(filename);
-        if (Files.notExists(path))
-            Files.createFile(path);
-
-        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-        for (String line : lines) {
-            if (line.trim().isEmpty())
-                continue;
-            T obj = createRecordFrom(line.trim());
-            if (obj != null)
-                records.add(obj);
-        }
-    }*/
+    /*
+     * public void readFromFile() throws IOException {
+     * records.clear();
+     * Path path = Paths.get(filename);
+     * if (Files.notExists(path))
+     * Files.createFile(path);
+     * 
+     * List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+     * for (String line : lines) {
+     * if (line.trim().isEmpty())
+     * continue;
+     * T obj = createRecordFrom(line.trim());
+     * if (obj != null)
+     * records.add(obj);
+     * }
+     * }
+     */
     public void readFromFile() {
         String line;// to read a line as a string from the file.
         records.clear();
         try {
             File file = new File(fileName);
             Scanner scan = new Scanner(file);
-            while (scan.hasNextLine()) // While the file has a next line (will read until no new line is found).
-            {
-                line = scan.nextLine();
-                if (null == createRecordFrom(line)) {
-                    break;
-                } else {
-                    records.add(createRecordFrom(line));
-                }
+            if (scan.hasNextLine()) {
+                while (scan.hasNextLine()) // While the file has a next line (will read until no new line is found).
+                {
+                    line = scan.nextLine();
+                    if (null == createRecordFrom(line)) {
+                        break;
+                    } else {
+                        records.add(createRecordFrom(line));
+                    }
 
+                }
             }
             scan.close();
         } catch (FileNotFoundException e) {
@@ -87,15 +92,22 @@ public abstract class Database<T extends Representation> // which means that the
     public void insertRecord(T record) {
         if (!contains(record.getSearchKey())) {
             records.add(record);
+            System.out.println("Added Successful!");
+        } else {
+            System.out.println("The id must be unique");
         }
     }
 
     /** Deletes a record whose key matches. */
     public void deleteRecord(String key) {
-        records.removeIf(r -> r.getSearchKey().equals(key));
-        System.out.println("Remove Successful!");
-        
-        
+        for (T record : records) {
+            if (record.getSearchKey().equals(key)) {
+                records.remove(record);
+                System.out.println("Remove Successful!");
+                return;
+            }
+        }
+        System.out.println("Key not found");
     }
 
     /** Saves all current records back to the file. */
@@ -112,4 +124,3 @@ public abstract class Database<T extends Representation> // which means that the
         Files.write(path, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
     }
 }
-

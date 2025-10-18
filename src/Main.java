@@ -83,7 +83,6 @@ public class Main {
                     String key = scanner.nextLine().trim();
                     try {
                         admin.removeEmployee(key);
-                        System.out.println("Employee removed successfully.");
                     } catch (Exception e) {
                         System.out.println("Error removing employee: " + e.getMessage());
                     }
@@ -121,6 +120,7 @@ public class Main {
     private static void runEmployeeMenu(Scanner scanner) {
         EmployeeRole employee = new EmployeeRole();
         boolean logout = false;
+        Product[] products = employee.getListOfProducts();
 
         while (!logout) {
             System.out.println("\n=== EMPLOYEE MENU ===");
@@ -152,7 +152,6 @@ public class Main {
                         float price = Float.parseFloat(scanner.nextLine().trim());
 
                         employee.addProduct(productID, productName, manufacturer, supplier, quantity, price);
-                        System.out.println("Product added successfully.");
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid number input. Please try again.");
                     } catch (IOException e) {
@@ -164,7 +163,7 @@ public class Main {
 
                 case "2":
                     try {
-                        Product[] products = employee.getListOfProducts();
+                        products = employee.getListOfProducts();
                         if (products == null || products.length == 0) {
                             System.out.println("No products found.");
                         } else {
@@ -191,7 +190,6 @@ public class Main {
                         LocalDate purchaseDate = LocalDate.parse(scanner.nextLine().trim());
 
                         employee.purchaseProduct(customerSSN, productId, purchaseDate);
-                        //System.out.println("Product purchased successfully.");
                     } catch (DateTimeParseException e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
                     } catch (Exception e) {
@@ -211,7 +209,7 @@ public class Main {
                         LocalDate rDate = LocalDate.parse(scanner.nextLine().trim());
 
                         employee.returnProduct(custSSN, prodId, pDate, rDate);
-                   
+
                     } catch (DateTimeParseException e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
                     } catch (Exception e) {
@@ -239,11 +237,11 @@ public class Main {
                     try {
                         System.out.print("Enter customer SSN for payment: ");
                         String custPaymentId = scanner.nextLine().trim();
-                        System.out.print("Enter payment date (YYYY-MM-DD): ");
+                        System.out.print("Enter purchase date date (YYYY-MM-DD): ");
                         LocalDate paymentDate = LocalDate.parse(scanner.nextLine().trim());
 
-                         employee.applyPayment(custPaymentId, paymentDate);
-                        
+                        employee.applyPayment(custPaymentId, paymentDate);
+
                     } catch (DateTimeParseException e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
                     } catch (Exception e) {
