@@ -45,31 +45,12 @@ public class Main {
         empDB.saveToFile();
         empDB.insertRecord(new EmployeeUser("E101", "Ahmed", "ahmed@email.com", "Cairo", "0111111111"));
         empDB.insertRecord(new EmployeeUser("E100", "Nour", "nour@email.com", "Alexandria", "0100000000"));
-        empDB.saveToFile();
+        empDB.saveToFile();*/
 
 
-        // ========== Product test ==========
-       /* ProductDatabase prodDB = new ProductDatabase("Products.txt");
-        prodDB.insertRecord(new Product("P200", "Laptop", "Apple", "TechSupplier", 5, 1500f));
-        prodDB.insertRecord(new Product("P201", "Phone", "Samsung", "MobileInc", 8, 800f));
-
-        System.out.println("\nProducts:");
-        prodDB.printAll();
-        System.out.println("Contains P201? " + prodDB.contains("P201"));
-        prodDB.deleteRecord("P200");
-        System.out.println("\nAfter deletion:");
-        prodDB.printAll();
+    
 
 
-        // ========== CustomerProduct test ==========
-        CustomerProductDatabase custDB = new CustomerProductDatabase("CustomersProducts.txt");
-        CustomerProduct cp1 = new CustomerProduct("7845345678", "P201", LocalDate.of(2025, 10, 17));
-        cp1.setPaid(true);
-        custDB.insertRecord(cp1);
-
-        System.out.println("\nCustomer Purchases:");
-        custDB.printAll();
-        System.out.println("Contains purchase? " + custDB.contains(cp1.getSearchKey()));*/
         AdminRole a=new AdminRole();
         a.addEmployee("E100", "Nour", "nour@email.com", "Alexandria", "0100000000");
         a.addEmployee("E102", "Mariam", "Mariam@email.com", "Alexandria", "01112130000");
@@ -78,4 +59,5 @@ public class Main {
 }
 
     
+
 
