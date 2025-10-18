@@ -44,11 +44,14 @@ public class CustomerProduct implements Representation{
     }
 
     public LocalDate getPurchaseDate() {
+        
         return this.purchaseDate;
     }
 @Override
     public String lineRepresentation() {
-        return this.customerSSN + "," + this.productID + "," + this.purchaseDate + "," + this.paid;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = this.purchaseDate.format(formatter);
+        return this.customerSSN + "," + this.productID + "," + formattedDate + "," + this.paid;
     }
 
     public boolean isPaid() {
@@ -64,5 +67,8 @@ public class CustomerProduct implements Representation{
         String formattedDate = this.purchaseDate.format(formatter);
         return this.customerSSN + "," + this.productID + "," + formattedDate;
     }
+
+}
+
 
 }
