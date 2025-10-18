@@ -30,7 +30,7 @@ public class Product implements Representation{
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-@override
+@Override
     public String getSearchKey() {
         return productID;
     }
@@ -52,7 +52,7 @@ public class Product implements Representation{
     }
 
     // ================ Methods ================
-@override
+@Override
     public String lineRepresentation() { // Returns a comma-separated line of product data
         return productID + "," + productName + "," + manufacturerName + "," +
                 supplierName + "," + quantity + "," + price;
